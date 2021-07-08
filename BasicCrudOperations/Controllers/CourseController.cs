@@ -22,7 +22,7 @@ namespace BasicCrudOperations.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            //_courseService.GetCourses();
+            _courseService.GetCourses();
             return new string[] { "value1", "value2" };
         }
 

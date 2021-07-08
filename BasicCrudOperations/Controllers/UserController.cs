@@ -24,7 +24,7 @@ namespace BasicCrudOperations.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            //_userService.GetUsers();
+            _userService.GetUsers();
             return new string[] { "value1", "value2" };
         }
 
