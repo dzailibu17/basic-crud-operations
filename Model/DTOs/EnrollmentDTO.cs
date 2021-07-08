@@ -1,22 +1,19 @@
-﻿using System;
+﻿using Model.DTOs;
+using Model.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Model
+namespace Model.DTOs
 {
-    public class Enrollment
+    public class EnrollmentDTO
     {
         public int EnrollmentID { get; set; }
         public int CourseID { get; set; }
         public int UserID { get; set; }
         public Grade? Grade { get; set; }
 
-        public Course Course { get; set; }
-        public User Student { get; set; }
-    }
-
-    public enum Grade
-    {
-        A, B, C, D, F
+        public CourseDTO Course { get; set; }
+        public UserDTO User { get; set; }
     }
 }

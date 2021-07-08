@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Repository.DbModels;
 using System.Linq;
+using Model.Enums;
 
 namespace Repository.DbInitializer
 {

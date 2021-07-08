@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Repository.EnrollmentRepository
+namespace Model.Enums
 {
-    public class EnrollmentRepository
+    public enum Grade
     {
+        A, B, C, D, F
     }
 }

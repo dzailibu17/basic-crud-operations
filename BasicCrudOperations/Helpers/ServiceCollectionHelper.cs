@@ -1,9 +1,6 @@
-﻿using Interface;
+﻿using Interface.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Service;
-using Repository.UserRepository;
-using Repository.CourseRepository;
-using Repository.EnrollmentRepository;
 
 namespace BasicCrudOperations.Helpers
 {
@@ -20,9 +17,7 @@ namespace BasicCrudOperations.Helpers
 
         public static IServiceCollection RegisterAppRepositories(this IServiceCollection services)
         {
-            //services.AddScoped<UserService, UserRepository>();
-            //services.AddScoped<CourseService, CourseRepository>();
-            //services.AddScoped<EnrollmentService, EnrollmentRepository>();
+
 
             return services;
         }

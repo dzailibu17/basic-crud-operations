@@ -1,4 +1,5 @@
 ﻿using Interface;
+using Interface.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,7 +23,7 @@ namespace BasicCrudOperations.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            _enrollmentService.GetEnrollments();
+            //_enrollmentService.GetEnrollments();
             return new string[] { "value1", "value2" };
         }
 
