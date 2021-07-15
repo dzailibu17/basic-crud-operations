@@ -8,6 +8,11 @@ namespace Interface.Services
 {
     public interface ICourseService
     {
-        List<CourseDTO> GetCourses();
+        CourseDTO GetCourseByID(int ID);
+        List<CourseDTO> GetCourses(); 
+        CourseDTO Add(CourseDTO course);
+        CourseDTO Update(CourseDTO courseChanges);
+        CourseDTO Delete(int ID);
+
     }
 }

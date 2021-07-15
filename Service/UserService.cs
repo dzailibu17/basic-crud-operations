@@ -16,9 +16,29 @@ namespace Service
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
+        public UserDTO Add(UserDTO user)
+        {
+            return _userRepository.Add(user);
+        }
+
+        public UserDTO Delete(int ID)
+        {
+            return _userRepository.Delete(ID);
+        }
+
+        public UserDTO GetUserByID(int ID)
+        {
+            return _userRepository.GetUserByID(ID);
+        }
+
         public List<UserDTO> GetUsers()
         {
             return new List<UserDTO>(_userRepository.GetUsers());
+        }
+
+        public UserDTO Update(UserDTO userChanges)
+        {
+            return _userRepository.Update(userChanges);
         }
     }
 }

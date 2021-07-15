@@ -17,9 +17,30 @@ namespace Service
         {
             _enrollmentRepository = enrollmentRepository ?? throw new ArgumentNullException(nameof(enrollmentRepository));
         }
+
+        public EnrollmentDTO Add(EnrollmentDTO enrollment)
+        {
+            return _enrollmentRepository.Add(enrollment);
+        }
+
+        public EnrollmentDTO Delete(int ID)
+        {
+            return _enrollmentRepository.Delete(ID);
+        }
+
+        public EnrollmentDTO GetEnrollmentByID(int ID)
+        {
+            return _enrollmentRepository.GetEnrollmentByID(ID);
+        }
+
         public List<EnrollmentDTO> GetEnrollments()
         {
             return new List<EnrollmentDTO>(_enrollmentRepository.GetEnrollments());
+        }
+
+        public EnrollmentDTO Update(EnrollmentDTO enrollmentChanges)
+        {
+            return _enrollmentRepository.Update(enrollmentChanges);
         }
     }
 }

@@ -15,9 +15,30 @@ namespace Service
             _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
         }
 
+        public CourseDTO Add(CourseDTO course)
+        {
+            _courseRepository.Add(course);
+            return course;
+        }
+
+        public CourseDTO Delete(int ID)
+        {
+            return _courseRepository.Delete(ID);
+        }
+
+        public CourseDTO GetCourseByID(int ID)
+        {
+            return _courseRepository.GetCourseByID(ID);
+        }
+
         public List<CourseDTO> GetCourses()
         {
             return new List<CourseDTO>(_courseRepository.GetCourses());
+        }
+
+        public CourseDTO Update(CourseDTO courseChanges)
+        {
+            return _courseRepository.Update(courseChanges);
         }
     }
 }
