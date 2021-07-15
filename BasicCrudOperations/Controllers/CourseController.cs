@@ -18,34 +18,31 @@ namespace BasicCrudOperations.Controllers
         {
             _courseService = courseService;
         }
-        // GET: api/<CourseController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+
+        
+        [HttpGet("GetCourses")]
+        public IActionResult Get()
         {
-            _courseService.GetCourses();
-            return new string[] { "value1", "value2" };
+            return Ok(_courseService.GetCourses());
         }
 
-        // GET api/<CourseController>/5
         [HttpGet("GetSingle")]
-        public int Get([FromQuery] int id)
+        public IActionResult Get([FromQuery] int id)
         {
-            return id;
+            //return Ok(_courseService.);
+            return Ok(id);
         }
 
-        // POST api/<CourseController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<CourseController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<CourseController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
