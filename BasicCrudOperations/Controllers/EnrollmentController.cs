@@ -2,6 +2,7 @@
 using Interface.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Model.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,36 +20,36 @@ namespace BasicCrudOperations.Controllers
         {
             _enrollmentService = enrollmentService;
         }
-        // GET: api/<EnrollmentController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+
+
+        [HttpGet("GetEnrollments")]
+        public IActionResult Get()
         {
-            _enrollmentService.GetEnrollments();
-            return new string[] { "value1", "value2" };
+            return Ok(_enrollmentService.GetEnrollments());
         }
 
-        // GET api/<EnrollmentController>/5
-        [HttpGet("GetSingle")]
-        public int Get([FromQuery] int id)
+        [HttpGet("GetEnrollmentByID")]
+        public IActionResult Get([FromQuery] int id)
         {
-            return id;
+            return Ok(_enrollmentService.GetEnrollmentByID(id));
         }
 
-        // POST api/<EnrollmentController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("AddEnrollment")]
+        public IActionResult Post([FromBody] EnrollmentDTO enrollmentDTO)
         {
+            return Ok(_enrollmentService.Add(enrollmentDTO));
         }
-        // PUT api/<EnrollmentController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        
+        [HttpPut("UpdateEnrollment")]
+        public IActionResult Put([FromBody] EnrollmentDTO enrollmentDTO)
         {
+            return Ok(_enrollmentService.Update(enrollmentDTO));
         }
 
-        // DELETE api/<EnrollmentController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("DeleteEnrollment")]
+        public IActionResult Delete(int id)
         {
+            return Ok(_enrollmentService.Delete(id));
         }
     }
 }

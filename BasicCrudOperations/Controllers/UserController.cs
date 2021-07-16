@@ -1,6 +1,7 @@
 ﻿using Interface;
 using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
+using Model.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,37 +21,35 @@ namespace BasicCrudOperations.Controllers
         {
             _userService = userService;
         }
-        // GET: api/<UserController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        
+        [HttpGet("GetUsers")]
+        public IActionResult Get()
         {
-            _userService.GetUsers();
-            return new string[] { "value1", "value2" };
+            return Ok(_userService.GetUsers());
         }
 
-        // GET api/<UserController>/5
-        [HttpGet("GetSingle")]
-        public int Get([FromQuery] int id)
+        [HttpGet("GetGetUserByID")]
+        public IActionResult Get([FromQuery] int id)
         {
-            return id;
+            return Ok(_userService.GetUserByID(id));
         }
 
-        // POST api/<UserController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("AddUser")]
+        public IActionResult Post([FromBody] UserDTO userDTO)
         {
+            return Ok(_userService.Add(userDTO));
         }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("UpdateUser")]
+        public IActionResult Put([FromBody] UserDTO userDTO)
         {
+            return Ok(_userService.Update(userDTO));
         }
 
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("DeleteUser")]
+        public IActionResult Delete(int id)
         {
+            return Ok(_userService.Delete(id));
         }
     }
 }
