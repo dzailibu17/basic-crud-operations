@@ -7,8 +7,7 @@ namespace Model.DTOs
 {
     public class CourseDTO
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int CourseID { get; set; }
+        public int ID { get; set; }
         public string Title { get; set; }
         public int Credits { get; set; }
 

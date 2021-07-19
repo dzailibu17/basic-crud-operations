@@ -36,6 +36,7 @@ namespace BasicCrudOperations
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.RegisterAppServices();
+            services.RegisterAppRepositories();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

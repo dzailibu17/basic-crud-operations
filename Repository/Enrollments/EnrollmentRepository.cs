@@ -20,7 +20,7 @@ namespace Repository.Enrollments
         {
             context.Enrollments.Add(new DbModels.Enrollment
             {
-                EnrollmentID = enrollment.EnrollmentID,
+                ID = enrollment.ID,
                 CourseID = enrollment.CourseID,
                 UserID = enrollment.UserID,
                 Grade = enrollment.Grade,
@@ -37,7 +37,7 @@ namespace Repository.Enrollments
             {
                 var deletedEnrollment = new EnrollmentDTO
                 {
-                    EnrollmentID = enrollment.EnrollmentID,
+                    ID = enrollment.ID,
                     CourseID = enrollment.CourseID,
                     UserID = enrollment.UserID,
                     Grade = enrollment.Grade,
@@ -56,7 +56,7 @@ namespace Repository.Enrollments
             {
                 return new EnrollmentDTO
                 { 
-                    EnrollmentID = existingEnrollment.EnrollmentID,
+                    ID = existingEnrollment.ID,
                     CourseID = existingEnrollment.CourseID,
                     UserID = existingEnrollment.UserID,
                     Grade = existingEnrollment.Grade,
@@ -73,7 +73,7 @@ namespace Repository.Enrollments
             {
                 enrollmentsDTO.Add(new EnrollmentDTO
                 {
-                    EnrollmentID = enrollment.EnrollmentID,
+                    ID = enrollment.ID,
                     CourseID = enrollment.CourseID,
                     UserID = enrollment.UserID,
                     Grade = enrollment.Grade,
@@ -87,7 +87,7 @@ namespace Repository.Enrollments
 
             var enrollmentChanges = new Enrollment 
             {
-                EnrollmentID = enrollmentChangesDTO.EnrollmentID,
+                ID = enrollmentChangesDTO.ID,
                 CourseID = enrollmentChangesDTO.CourseID,
                 UserID = enrollmentChangesDTO.UserID,
                 Grade = enrollmentChangesDTO.Grade,

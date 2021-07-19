@@ -20,7 +20,7 @@ namespace Repository.Courses
         {
             context.Courses.Add(new DbModels.Course
             {
-                 CourseID = course.CourseID,
+                 ID = course.ID,
                  Credits = course.Credits,
                  Title = course.Title,
             });
@@ -35,7 +35,7 @@ namespace Repository.Courses
             {
                 var deletetCourse = new CourseDTO 
                 {
-                    CourseID = course.CourseID,
+                    ID = course.ID,
                     Credits = course.Credits,
                     Title = course.Title,
                 };
@@ -53,7 +53,7 @@ namespace Repository.Courses
             {
                 return new CourseDTO
                 {
-                    CourseID = existingCourse.CourseID,
+                    ID = existingCourse.ID,
                     Credits = existingCourse.Credits,
                     Title = existingCourse.Title,
                 };
@@ -69,7 +69,7 @@ namespace Repository.Courses
             {
                 coursesDTO.Add(new CourseDTO
                 {
-                    CourseID = course.CourseID,
+                    ID = course.ID,
                     Credits = course.Credits,
                     Title = course.Title,
                 });
@@ -81,7 +81,7 @@ namespace Repository.Courses
         {
             var courseChanges = new Course
             {
-                CourseID = courseChangesDTO.CourseID,
+                ID = courseChangesDTO.ID,
                 Credits = courseChangesDTO.Credits,
                 Title = courseChangesDTO.Title,
             };

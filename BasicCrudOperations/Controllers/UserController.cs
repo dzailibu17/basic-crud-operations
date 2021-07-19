@@ -21,14 +21,21 @@ namespace BasicCrudOperations.Controllers
         {
             _userService = userService;
         }
-        
+
+
+        [HttpGet("home")]
+        public IActionResult Home()
+        {
+            return Ok("Welcome");
+        }
+
         [HttpGet("GetUsers")]
         public IActionResult Get()
         {
             return Ok(_userService.GetUsers());
         }
 
-        [HttpGet("GetGetUserByID")]
+        [HttpGet("GetUserByID")]
         public IActionResult Get([FromQuery] int id)
         {
             return Ok(_userService.GetUserByID(id));
