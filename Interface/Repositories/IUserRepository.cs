@@ -1,8 +1,5 @@
-﻿using Model;
-using Model.DTOs;
-using System;
+﻿using Model.DTOs;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Interface.Repositories
 {
@@ -10,8 +7,8 @@ namespace Interface.Repositories
     {
         UserDTO GetUserByID(int ID);
         IEnumerable<UserDTO> GetUsers();
-        UserDTO Add(UserDTO user);
-        UserDTO Update(UserDTO userChanges);
-        UserDTO Delete(int ID);
+        UserDTO AddUser(UserDTO user);
+        UserDTO UpdateUser(UserDTO userChanges);
+        UserDTO DeleteUser(int ID);
     }
 }

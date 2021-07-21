@@ -1,6 +1,4 @@
-﻿using Model;
-using Model.DTOs;
-using System;
+﻿using Model.DTOs;
 using System.Collections.Generic;
 
 namespace Interface.Services
@@ -9,8 +7,8 @@ namespace Interface.Services
     {
         UserDTO GetUserByID(int ID);
         List<UserDTO> GetUsers();
-        UserDTO Add(UserDTO user);
-        UserDTO Update(UserDTO userChanges);
-        UserDTO Delete(int ID);        
+        UserDTO AddUser(UserDTO user);
+        UserDTO UpdateUser(UserDTO userChanges);
+        UserDTO DeleteUser(int ID);        
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Model.DTOs
 {

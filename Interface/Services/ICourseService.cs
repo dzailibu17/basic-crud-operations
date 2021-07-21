@@ -1,8 +1,5 @@
-﻿using Model;
-using Model.DTOs;
-using System;
+﻿using Model.DTOs;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Interface.Services
 {
@@ -10,9 +7,8 @@ namespace Interface.Services
     {
         CourseDTO GetCourseByID(int ID);
         List<CourseDTO> GetCourses(); 
-        CourseDTO Add(CourseDTO course);
-        CourseDTO Update(CourseDTO courseChanges);
-        CourseDTO Delete(int ID);
-
+        CourseDTO AddCourse(CourseDTO course);
+        CourseDTO UpdateCourse(CourseDTO courseChanges);
+        CourseDTO DeleteCourse(int ID);
     }
 }

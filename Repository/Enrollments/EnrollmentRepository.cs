@@ -1,9 +1,10 @@
 ﻿using Interface.Repositories;
+using Model.DTOs;
+using Repository.DbModels;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Repository.DbModels;
-using Model.DTOs;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Repository.Enrollments
 {
@@ -16,86 +17,118 @@ namespace Repository.Enrollments
             this.context = context;
         }
 
-        public EnrollmentDTO Add(EnrollmentDTO enrollment)
+        public EnrollmentDTO AddEnrollment(EnrollmentDTO enrollment)
         {
-            context.Enrollments.Add(new DbModels.Enrollment
+            try
             {
-                ID = enrollment.ID,
-                CourseID = enrollment.CourseID,
-                UserID = enrollment.UserID,
-                Grade = enrollment.Grade,
-                
-            });
-            context.SaveChanges();
-            return enrollment;
-        }
-
-        public EnrollmentDTO Delete(int ID)
-        {
-            Enrollment enrollment = context.Enrollments.Find(ID);
-            if (enrollment != null)
-            {
-                var deletedEnrollment = new EnrollmentDTO
+                context.Enrollments.Add(new DbModels.Enrollment
                 {
                     ID = enrollment.ID,
                     CourseID = enrollment.CourseID,
                     UserID = enrollment.UserID,
                     Grade = enrollment.Grade,
-                };
-                context.Enrollments.Remove(enrollment);
+
+                });
                 context.SaveChanges();
-                return deletedEnrollment;
+                return enrollment;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
+            return null;
+        }
+
+        public EnrollmentDTO DeleteEnrollment(int ID)
+        {
+            try
+            {
+                Enrollment enrollment = context.Enrollments.Find(ID);
+                if (enrollment != null)
+                {
+                    var deletedEnrollment = new EnrollmentDTO
+                    {
+                        ID = enrollment.ID,
+                        CourseID = enrollment.CourseID,
+                        UserID = enrollment.UserID,
+                        Grade = enrollment.Grade,
+                    };
+                    context.Enrollments.Remove(enrollment);
+                    context.SaveChanges();
+                    return deletedEnrollment;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
             }
             return null;
         }
 
         public EnrollmentDTO GetEnrollmentByID(int ID)
         {
-            var existingEnrollment = context.Enrollments.Find(ID);
-            if (existingEnrollment != null)
+            try
             {
-                return new EnrollmentDTO
-                { 
-                    ID = existingEnrollment.ID,
-                    CourseID = existingEnrollment.CourseID,
-                    UserID = existingEnrollment.UserID,
-                    Grade = existingEnrollment.Grade,
-                };
+                var existingEnrollment = context.Enrollments.Find(ID);
+                if (existingEnrollment != null)
+                {
+                    return new EnrollmentDTO
+                    {
+                        ID = existingEnrollment.ID,
+                        CourseID = existingEnrollment.CourseID,
+                        UserID = existingEnrollment.UserID,
+                        Grade = existingEnrollment.Grade,
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
             }
             return null;
         }
 
         public IEnumerable<EnrollmentDTO> GetEnrollments()
         {
-            var enrollments = context.Enrollments;
-            List<EnrollmentDTO> enrollmentsDTO = new List<EnrollmentDTO>();
-            foreach (Enrollment enrollment in enrollments)
+            try
             {
-                enrollmentsDTO.Add(new EnrollmentDTO
+                return context.Enrollments.Select(e => new EnrollmentDTO
                 {
-                    ID = enrollment.ID,
-                    CourseID = enrollment.CourseID,
-                    UserID = enrollment.UserID,
-                    Grade = enrollment.Grade,
+                    ID = e.ID,
+                    CourseID = e.CourseID,
+                    UserID = e.UserID,
+                    Grade = e.Grade,
                 });
             }
-            return enrollmentsDTO;
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
+            return null;
         }
 
-        public EnrollmentDTO Update(EnrollmentDTO enrollmentChangesDTO)
+        public EnrollmentDTO UpdateEnrollment(EnrollmentDTO enrollmentChangesDTO)
         {
-
-            var enrollmentChanges = new Enrollment 
+            try
             {
-                ID = enrollmentChangesDTO.ID,
-                CourseID = enrollmentChangesDTO.CourseID,
-                UserID = enrollmentChangesDTO.UserID,
-                Grade = enrollmentChangesDTO.Grade,
-            };
-            var enrollment = context.Enrollments.Attach(enrollmentChanges);
-            enrollment.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
-            return enrollmentChangesDTO;
+                var enrollmentChanges = new Enrollment
+                {
+                    ID = enrollmentChangesDTO.ID,
+                    CourseID = enrollmentChangesDTO.CourseID,
+                    UserID = enrollmentChangesDTO.UserID,
+                    Grade = enrollmentChangesDTO.Grade,
+                };
+                var enrollment = context.Enrollments.Attach(enrollmentChanges);
+                enrollment.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+                return enrollmentChangesDTO; 
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
+            return null;
         }
     }
 }

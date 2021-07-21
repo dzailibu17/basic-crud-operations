@@ -1,12 +1,6 @@
-﻿using Interface;
-using Interface.Services;
-using Microsoft.AspNetCore.Http;
+﻿using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BasicCrudOperations.Controllers
 {
@@ -20,7 +14,6 @@ namespace BasicCrudOperations.Controllers
         {
             _enrollmentService = enrollmentService;
         }
-
 
         [HttpGet("GetEnrollments")]
         public IActionResult Get()
@@ -37,19 +30,19 @@ namespace BasicCrudOperations.Controllers
         [HttpPost("AddEnrollment")]
         public IActionResult Post([FromBody] EnrollmentDTO enrollmentDTO)
         {
-            return Ok(_enrollmentService.Add(enrollmentDTO));
+            return Ok(_enrollmentService.AddEnrollment(enrollmentDTO));
         }
         
         [HttpPut("UpdateEnrollment")]
         public IActionResult Put([FromBody] EnrollmentDTO enrollmentDTO)
         {
-            return Ok(_enrollmentService.Update(enrollmentDTO));
+            return Ok(_enrollmentService.UpdateEnrollment(enrollmentDTO));
         }
 
         [HttpDelete("DeleteEnrollment")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete([FromQuery] int id)
         {
-            return Ok(_enrollmentService.Delete(id));
+            return Ok(_enrollmentService.DeleteEnrollment(id));
         }
     }
 }

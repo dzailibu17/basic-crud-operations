@@ -3,27 +3,27 @@ using Interface.Services;
 using Model.DTOs;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Service
 {
     public class CourseService : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
+
         public CourseService(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
         }
 
-        public CourseDTO Add(CourseDTO course)
+        public CourseDTO AddCourse(CourseDTO course)
         {
-            _courseRepository.Add(course);
-            return course;
+            return _courseRepository.AddCourse(course);
         }
 
-        public CourseDTO Delete(int ID)
+        public CourseDTO DeleteCourse(int ID)
         {
-            return _courseRepository.Delete(ID);
+            return _courseRepository.DeleteCourse(ID);
         }
 
         public CourseDTO GetCourseByID(int ID)
@@ -33,12 +33,12 @@ namespace Service
 
         public List<CourseDTO> GetCourses()
         {
-            return new List<CourseDTO>(_courseRepository.GetCourses());
+            return _courseRepository.GetCourses().ToList();
         }
 
-        public CourseDTO Update(CourseDTO courseChanges)
+        public CourseDTO UpdateCourse(CourseDTO courseChanges)
         {
-            return _courseRepository.Update(courseChanges);
+            return _courseRepository.UpdateCourse(courseChanges);
         }
     }
 }

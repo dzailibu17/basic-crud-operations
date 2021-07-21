@@ -1,11 +1,6 @@
-﻿using Interface;
-using Interface.Services;
+﻿using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,7 +16,6 @@ namespace BasicCrudOperations.Controllers
         {
             _userService = userService;
         }
-
 
         [HttpGet("home")]
         public IActionResult Home()
@@ -44,19 +38,19 @@ namespace BasicCrudOperations.Controllers
         [HttpPost("AddUser")]
         public IActionResult Post([FromBody] UserDTO userDTO)
         {
-            return Ok(_userService.Add(userDTO));
+            return Ok(_userService.AddUser(userDTO));
         }
 
         [HttpPut("UpdateUser")]
         public IActionResult Put([FromBody] UserDTO userDTO)
         {
-            return Ok(_userService.Update(userDTO));
+            return Ok(_userService.UpdateUser(userDTO));
         }
 
         [HttpDelete("DeleteUser")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete([FromQuery] int id)
         {
-            return Ok(_userService.Delete(id));
+            return Ok(_userService.DeleteUser(id));
         }
     }
 }

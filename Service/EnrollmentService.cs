@@ -1,31 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Interface;
-using Interface.Repositories;
+﻿using Interface.Repositories;
 using Interface.Services;
-using Model;
 using Model.DTOs;
-using Repository.DbModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Service
 {
     public class EnrollmentService : IEnrollmentService
     {
         private readonly IEnrollmentRepository _enrollmentRepository;
+
         public EnrollmentService(IEnrollmentRepository enrollmentRepository)
         {
             _enrollmentRepository = enrollmentRepository ?? throw new ArgumentNullException(nameof(enrollmentRepository));
         }
 
-        public EnrollmentDTO Add(EnrollmentDTO enrollment)
+        public EnrollmentDTO AddEnrollment(EnrollmentDTO enrollment)
         {
-            return _enrollmentRepository.Add(enrollment);
+            return _enrollmentRepository.AddEnrollment(enrollment);
         }
 
-        public EnrollmentDTO Delete(int ID)
+        public EnrollmentDTO DeleteEnrollment(int ID)
         {
-            return _enrollmentRepository.Delete(ID);
+            return _enrollmentRepository.DeleteEnrollment(ID);
         }
 
         public EnrollmentDTO GetEnrollmentByID(int ID)
@@ -35,12 +33,12 @@ namespace Service
 
         public List<EnrollmentDTO> GetEnrollments()
         {
-            return new List<EnrollmentDTO>(_enrollmentRepository.GetEnrollments());
+            return _enrollmentRepository.GetEnrollments().ToList();
         }
 
-        public EnrollmentDTO Update(EnrollmentDTO enrollmentChanges)
+        public EnrollmentDTO UpdateEnrollment(EnrollmentDTO enrollmentChanges)
         {
-            return _enrollmentRepository.Update(enrollmentChanges);
+            return _enrollmentRepository.UpdateEnrollment(enrollmentChanges);
         }
     }
 }

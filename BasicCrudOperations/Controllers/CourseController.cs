@@ -1,11 +1,6 @@
 ﻿using Interface.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BasicCrudOperations.Controllers
 {
@@ -20,7 +15,6 @@ namespace BasicCrudOperations.Controllers
             _courseService = courseService;
         }
 
-        
         [HttpGet("GetCourses")]
         public IActionResult Get()
         {
@@ -36,19 +30,19 @@ namespace BasicCrudOperations.Controllers
         [HttpPost("AddCourse")]
         public IActionResult Post([FromBody] CourseDTO course)
         {
-            return Ok(_courseService.Add(course));
+            return Ok(_courseService.AddCourse(course));
         }
 
         [HttpPut("UpdateCourse")]
         public IActionResult Put([FromBody] CourseDTO courseDTO)
         {
-            return Ok(_courseService.Update(courseDTO));
+            return Ok(_courseService.UpdateCourse(courseDTO));
         }
 
         [HttpDelete("DeleteCourse")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete([FromQuery] int id)
         {
-            return Ok(_courseService.Delete(id));
+            return Ok(_courseService.DeleteCourse(id));
         }
     }
 }

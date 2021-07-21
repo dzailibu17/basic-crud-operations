@@ -1,8 +1,4 @@
-﻿using Model.DTOs;
-using Model.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Model.Enums;
 
 namespace Model.DTOs
 {

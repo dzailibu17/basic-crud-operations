@@ -1,8 +1,5 @@
-﻿using Model;
-using Model.DTOs;
-using System;
+﻿using Model.DTOs;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Interface.Repositories
 {
@@ -10,8 +7,8 @@ namespace Interface.Repositories
     {
         EnrollmentDTO GetEnrollmentByID(int ID);
         IEnumerable<EnrollmentDTO> GetEnrollments();
-        EnrollmentDTO Add(EnrollmentDTO enrollment);
-        EnrollmentDTO Update(EnrollmentDTO enrollmentChanges);
-        EnrollmentDTO Delete(int ID);
+        EnrollmentDTO AddEnrollment(EnrollmentDTO enrollment);
+        EnrollmentDTO UpdateEnrollment(EnrollmentDTO enrollmentChanges);
+        EnrollmentDTO DeleteEnrollment(int ID);
     }
 }

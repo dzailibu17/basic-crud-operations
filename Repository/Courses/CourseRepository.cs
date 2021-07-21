@@ -3,7 +3,8 @@ using Model.DTOs;
 using Repository.DbModels;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Repository.Courses
 {
@@ -16,80 +17,108 @@ namespace Repository.Courses
             this.context = context;
         }
 
-        public CourseDTO Add(CourseDTO course) 
+        public CourseDTO AddCourse(CourseDTO course) 
         {
-            context.Courses.Add(new DbModels.Course
+            try
             {
-                 ID = course.ID,
-                 Credits = course.Credits,
-                 Title = course.Title,
-            });
-            context.SaveChanges();
-            return course;
-        }
-
-        public CourseDTO Delete(int ID)
-        {
-            Course course = context.Courses.Find(ID);
-            if (course != null)
-            {
-                var deletetCourse = new CourseDTO 
+                context.Courses.Add(new DbModels.Course
                 {
                     ID = course.ID,
                     Credits = course.Credits,
                     Title = course.Title,
-                };
-                context.Courses.Remove(course);
+                });
                 context.SaveChanges();
-                return deletetCourse;
+            }
+            catch(Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
+            return course;
+        }
+
+        public CourseDTO DeleteCourse(int ID)
+        {
+            try
+            {
+                Course course = context.Courses.Find(ID);
+                if (course != null)
+                {
+                    var deletedCourse = new CourseDTO
+                    {
+                        ID = course.ID,
+                        Credits = course.Credits,
+                        Title = course.Title,
+                    };
+                    context.Courses.Remove(course);
+                    context.SaveChanges();
+                    return deletedCourse;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
             }
             return null;
         }
 
         public CourseDTO GetCourseByID(int ID)
         {
-            var existingCourse = context.Courses.Find(ID);
-            if (existingCourse != null)
+            try
             {
-                return new CourseDTO
+                var existingCourse = context.Courses.Find(ID);
+                if (existingCourse != null)
                 {
-                    ID = existingCourse.ID,
-                    Credits = existingCourse.Credits,
-                    Title = existingCourse.Title,
-                };
+                    return new CourseDTO
+                    {
+                        ID = existingCourse.ID,
+                        Credits = existingCourse.Credits,
+                        Title = existingCourse.Title,
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
             }
             return null;
         }
 
         public IEnumerable<CourseDTO> GetCourses()
         {
-            var courses = context.Courses;
-            List<CourseDTO> coursesDTO = new List<CourseDTO>();
-            foreach (Course course in courses)
+            try
             {
-                coursesDTO.Add(new CourseDTO
+                return context.Courses.Select(c => new CourseDTO
                 {
-                    ID = course.ID,
-                    Credits = course.Credits,
-                    Title = course.Title,
+                    ID = c.ID,
+                    Credits = c.Credits,
+                    Title = c.Title,
                 });
             }
-            return coursesDTO;
-        }
-
-        public CourseDTO Update(CourseDTO courseChangesDTO)
-        {
-            var courseChanges = new Course
+            catch (Exception ex)
             {
-                ID = courseChangesDTO.ID,
-                Credits = courseChangesDTO.Credits,
-                Title = courseChangesDTO.Title,
-            };
-            var course = context.Courses.Attach(courseChanges);
-            course.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
+                Trace.WriteLine(ex.Message);
+            }
+            return null;
+        }
+        public CourseDTO UpdateCourse(CourseDTO courseChangesDTO)
+        {
+            try
+            {
+                var courseChanges = new Course
+                {
+                    ID = courseChangesDTO.ID,
+                    Credits = courseChangesDTO.Credits,
+                    Title = courseChangesDTO.Title,
+                };
+                var course = context.Courses.Attach(courseChanges);
+                course.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
             return courseChangesDTO;
         }
-
     }
 }

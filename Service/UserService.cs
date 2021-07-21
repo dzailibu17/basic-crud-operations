@@ -1,29 +1,29 @@
-﻿using Interface;
-using Interface.Repositories;
+﻿using Interface.Repositories;
 using Interface.Services;
-using Model;
 using Model.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Service
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
-        public UserDTO Add(UserDTO user)
+        public UserDTO AddUser(UserDTO user)
         {
-            return _userRepository.Add(user);
+            return _userRepository.AddUser(user);
         }
 
-        public UserDTO Delete(int ID)
+        public UserDTO DeleteUser(int ID)
         {
-            return _userRepository.Delete(ID);
+            return _userRepository.DeleteUser(ID);
         }
 
         public UserDTO GetUserByID(int ID)
@@ -33,12 +33,12 @@ namespace Service
 
         public List<UserDTO> GetUsers()
         {
-            return new List<UserDTO>(_userRepository.GetUsers());
+            return _userRepository.GetUsers().ToList();
         }
 
-        public UserDTO Update(UserDTO userChanges)
+        public UserDTO UpdateUser(UserDTO userChanges)
         {
-            return _userRepository.Update(userChanges);
+            return _userRepository.UpdateUser(userChanges);
         }
     }
 }
