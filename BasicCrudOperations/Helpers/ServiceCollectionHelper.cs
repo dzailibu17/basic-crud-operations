@@ -1,10 +1,10 @@
-﻿using Interface;
+﻿using Interface.Repositories;
+using Interface.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Repository.Courses;
+using Repository.Enrollments;
+using Repository.Users;
 using Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BasicCrudOperations.Helpers
 {
@@ -13,14 +13,16 @@ namespace BasicCrudOperations.Helpers
         public static IServiceCollection RegisterAppServices(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
-
+            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<IEnrollmentService, EnrollmentService>();
             return services;
         }
 
         public static IServiceCollection RegisterAppRepositories(this IServiceCollection services)
         {
-
-
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
             return services;
         }
     }

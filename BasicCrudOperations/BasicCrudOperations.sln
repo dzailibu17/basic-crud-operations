@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicCrudOperations", "BasicCrudOperations.csproj", "{C9E46F17-CA51-4BEE-A48A-4C66E4E974EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "..\Repository\Repository.csproj", "{E2F46675-A059-492C-A05F-D65ACE994F3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "..\Repository\Repository.csproj", "{E2F46675-A059-492C-A05F-D65ACE994F3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "..\Service\Service.csproj", "{6A917AC6-479B-4D3D-B326-D295C5E8D3E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "..\Service\Service.csproj", "{6A917AC6-479B-4D3D-B326-D295C5E8D3E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "..\Model\Model.csproj", "{A2402945-F87D-46D4-BD83-002C6471433D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "..\Model\Model.csproj", "{A2402945-F87D-46D4-BD83-002C6471433D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interface", "..\Interface\Interface.csproj", "{F9B54BFA-A0FA-40F3-B18C-0989CA48BD7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interface", "..\Interface\Interface.csproj", "{F9B54BFA-A0FA-40F3-B18C-0989CA48BD7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

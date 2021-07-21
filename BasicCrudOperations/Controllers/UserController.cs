@@ -1,9 +1,6 @@
-﻿using Interface;
+﻿using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Model.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,37 +16,41 @@ namespace BasicCrudOperations.Controllers
         {
             _userService = userService;
         }
-        // GET: api/<UserController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+
+        [HttpGet("home")]
+        public IActionResult Home()
         {
-            _userService.GetUsers();
-            return new string[] { "value1", "value2" };
+            return Ok("Welcome");
         }
 
-        // GET api/<UserController>/5
-        [HttpGet("GetSingle")]
-        public int Get([FromQuery] int id)
+        [HttpGet("GetUsers")]
+        public IActionResult Get()
         {
-            return id;
+            return Ok(_userService.GetUsers());
         }
 
-        // POST api/<UserController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet("GetUserByID")]
+        public IActionResult Get([FromQuery] int id)
         {
+            return Ok(_userService.GetUserByID(id));
         }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("AddUser")]
+        public IActionResult Post([FromBody] UserDTO userDTO)
         {
+            return Ok(_userService.AddUser(userDTO));
         }
 
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPut("UpdateUser")]
+        public IActionResult Put([FromBody] UserDTO userDTO)
         {
+            return Ok(_userService.UpdateUser(userDTO));
+        }
+
+        [HttpDelete("DeleteUser")]
+        public IActionResult Delete([FromQuery] int id)
+        {
+            return Ok(_userService.DeleteUser(id));
         }
     }
 }
