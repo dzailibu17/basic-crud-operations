@@ -57,7 +57,6 @@ namespace Repository.Enrollments
                     context.SaveChanges();
                     return deletedEnrollment;
                 }
-                return null;
             }
             catch (Exception ex)
             {
