@@ -1,6 +1,7 @@
 ﻿using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTOs;
+using System;
 
 namespace BasicCrudOperations.Controllers
 {
@@ -15,34 +16,60 @@ namespace BasicCrudOperations.Controllers
             _courseService = courseService;
         }
 
-        [HttpGet("GetCourses")]
+        [HttpGet("Courses")]
         public IActionResult Get()
         {
-            return Ok(_courseService.GetCourses());
+            var courses = _courseService.GetCourses();
+            if (courses == null)
+            {
+                return NotFound();
+            }
+            return Ok(courses);
         }
 
-        [HttpGet("GetCourseByID")]
-        public IActionResult Get([FromQuery] int id)
+        [HttpGet("Courses/{id}")]
+        public IActionResult Get([FromRoute] int id)
         {
-            return Ok(_courseService.GetCourseByID(id));
+            var course = _courseService.GetCourseByID(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            return Ok(course);
         }
 
-        [HttpPost("AddCourse")]
-        public IActionResult Post([FromBody] CourseDTO course)
+        [HttpPost("Courses")]
+        public IActionResult Post([FromBody] CourseDTO courseDTO)
         {
-            return Ok(_courseService.AddCourse(course));
+            var course = _courseService.AddCourse(courseDTO);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            return Ok(course);
         }
 
-        [HttpPut("UpdateCourse")]
-        public IActionResult Put([FromBody] CourseDTO courseDTO)
+        [HttpPut("Courses/{id}")]
+        public IActionResult Put([FromRoute] int id, [FromBody] CourseDTO courseDTO)
         {
-            return Ok(_courseService.UpdateCourse(courseDTO));
+            courseDTO.ID = id;
+            var course = _courseService.UpdateCourse(courseDTO);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            return Ok(course);
         }
 
-        [HttpDelete("DeleteCourse")]
-        public IActionResult Delete([FromQuery] int id)
+        [HttpDelete("Courses/{id}")]
+        public IActionResult Delete([FromRoute] int id)
         {
-            return Ok(_courseService.DeleteCourse(id));
+            var course = _courseService.DeleteCourse(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            return Ok(course);
         }
     }
 }

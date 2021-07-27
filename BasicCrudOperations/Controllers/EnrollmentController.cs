@@ -15,34 +15,60 @@ namespace BasicCrudOperations.Controllers
             _enrollmentService = enrollmentService;
         }
 
-        [HttpGet("GetEnrollments")]
+        [HttpGet("Enrollments")]
         public IActionResult Get()
         {
-            return Ok(_enrollmentService.GetEnrollments());
+            var enrollments = _enrollmentService.GetEnrollments();
+            if (enrollments == null)
+            {
+                return NotFound();
+            }
+            return Ok(enrollments);
         }
 
-        [HttpGet("GetEnrollmentByID")]
-        public IActionResult Get([FromQuery] int id)
+        [HttpGet("Enrollments/{id}")]
+        public IActionResult Get([FromRoute] int id)
         {
-            return Ok(_enrollmentService.GetEnrollmentByID(id));
+           var enrollment = _enrollmentService.GetEnrollmentByID(id);
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+            return Ok(enrollment);
         }
 
-        [HttpPost("AddEnrollment")]
+        [HttpPost("Enrollments")]
         public IActionResult Post([FromBody] EnrollmentDTO enrollmentDTO)
         {
-            return Ok(_enrollmentService.AddEnrollment(enrollmentDTO));
+            var enrollment = _enrollmentService.AddEnrollment(enrollmentDTO);
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+            return Ok(enrollment);
         }
         
-        [HttpPut("UpdateEnrollment")]
-        public IActionResult Put([FromBody] EnrollmentDTO enrollmentDTO)
+        [HttpPut("Enrollments/{id}")]
+        public IActionResult Put([FromRoute] int id, [FromBody] EnrollmentDTO enrollmentDTO)
         {
-            return Ok(_enrollmentService.UpdateEnrollment(enrollmentDTO));
+            enrollmentDTO.ID = id;
+            var enrollment =  _enrollmentService.UpdateEnrollment(enrollmentDTO);
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+            return Ok(enrollment);
         }
 
-        [HttpDelete("DeleteEnrollment")]
-        public IActionResult Delete([FromQuery] int id)
+        [HttpDelete("Enrollments/{id}")]
+        public IActionResult Delete([FromRoute] int id)
         {
-            return Ok(_enrollmentService.DeleteEnrollment(id));
+            var enrollment = _enrollmentService.DeleteEnrollment(id);
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+            return Ok(enrollment);
         }
     }
 }

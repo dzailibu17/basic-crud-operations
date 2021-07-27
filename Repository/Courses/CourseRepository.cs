@@ -23,7 +23,7 @@ namespace Repository.Courses
             {
                 context.Courses.Add(new Course
                 {
-                    ID = FindNewID(true),
+                    ID = FindNewID(),
                     Credits = course.Credits,
                     Title = course.Title,
                 });
@@ -100,6 +100,7 @@ namespace Repository.Courses
             }
             return null;
         }
+
         public CourseDTO UpdateCourse(CourseDTO courseChangesDTO)
         {
             try
@@ -121,22 +122,18 @@ namespace Repository.Courses
             return courseChangesDTO;
         }
     
-        private int FindNewID(bool isFirst, int? id = null)
+        private int FindNewID(int? id = null)
         {
-            if (isFirst)
+            if (!id.HasValue)
             {
                 id = context.Courses.Any() ? context.Courses.Count() + 1 : 1;
             }
-            if (context.Courses.Find(id) == null )
-            {
-                return (int)id;
-            }
-            else
+            if (context.Courses.Find(id) != null )
             {
                 id += 1;
-                FindNewID(false, id);
-                return (int)id;
+                FindNewID(id);
             }
+            return (int)id;
         }
     }
 }

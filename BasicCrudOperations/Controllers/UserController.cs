@@ -23,34 +23,60 @@ namespace BasicCrudOperations.Controllers
             return Ok("Welcome");
         }
 
-        [HttpGet("GetUsers")]
+        [HttpGet("Users")]
         public IActionResult Get()
         {
-            return Ok(_userService.GetUsers());
+            var users = _userService.GetUsers();
+            if (users == null)
+            {
+                return NotFound();
+            }
+            return Ok(users);
         }
 
-        [HttpGet("GetUserByID")]
-        public IActionResult Get([FromQuery] int id)
+        [HttpGet("Users/{id}")]
+        public IActionResult Get([FromRoute] int id)
         {
-            return Ok(_userService.GetUserByID(id));
+            var user = _userService.GetUserByID(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
 
-        [HttpPost("AddUser")]
+        [HttpPost("Users")]
         public IActionResult Post([FromBody] UserDTO userDTO)
         {
-            return Ok(_userService.AddUser(userDTO));
+            var user =  _userService.AddUser(userDTO);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
 
-        [HttpPut("UpdateUser")]
-        public IActionResult Put([FromBody] UserDTO userDTO)
+        [HttpPut("Users/{id}")]
+        public IActionResult Put([FromRoute] int id, [FromBody] UserDTO userDTO)
         {
-            return Ok(_userService.UpdateUser(userDTO));
+            userDTO.ID = id;
+            var user = _userService.UpdateUser(userDTO);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
 
-        [HttpDelete("DeleteUser")]
-        public IActionResult Delete([FromQuery] int id)
+        [HttpDelete("Users/{id}")]
+        public IActionResult Delete([FromRoute] int id)
         {
-            return Ok(_userService.DeleteUser(id));
+            var user = _userService.DeleteUser(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
     }
 }
