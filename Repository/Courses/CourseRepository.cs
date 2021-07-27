@@ -21,9 +21,9 @@ namespace Repository.Courses
         {
             try
             {
-                context.Courses.Add(new DbModels.Course
+                context.Courses.Add(new Course
                 {
-                    ID = course.ID,
+                    ID = FindNewID(true),
                     Credits = course.Credits,
                     Title = course.Title,
                 });
@@ -119,6 +119,24 @@ namespace Repository.Courses
                 Trace.WriteLine(ex.Message);
             }
             return courseChangesDTO;
+        }
+    
+        private int FindNewID(bool isFirst, int? id = null)
+        {
+            if (isFirst)
+            {
+                id = context.Courses.Any() ? context.Courses.Count() + 1 : 1;
+            }
+            if (context.Courses.Find(id) == null )
+            {
+                return (int)id;
+            }
+            else
+            {
+                id += 1;
+                FindNewID(false, id);
+                return (int)id;
+            }
         }
     }
 }
