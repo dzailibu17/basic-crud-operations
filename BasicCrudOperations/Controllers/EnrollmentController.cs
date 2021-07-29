@@ -15,32 +15,33 @@ namespace BasicCrudOperations.Controllers
             _enrollmentService = enrollmentService;
         }
 
-        [HttpGet("GetEnrollments")]
+        [HttpGet("Enrollments")]
         public IActionResult Get()
         {
             return Ok(_enrollmentService.GetEnrollments());
         }
 
-        [HttpGet("GetEnrollmentByID")]
-        public IActionResult Get([FromQuery] int id)
+        [HttpGet("Enrollments/{id}")]
+        public IActionResult Get([FromRoute] int id)
         {
             return Ok(_enrollmentService.GetEnrollmentByID(id));
         }
 
-        [HttpPost("AddEnrollment")]
+        [HttpPost("Enrollments")]
         public IActionResult Post([FromBody] EnrollmentDTO enrollmentDTO)
         {
             return Ok(_enrollmentService.AddEnrollment(enrollmentDTO));
         }
         
-        [HttpPut("UpdateEnrollment")]
-        public IActionResult Put([FromBody] EnrollmentDTO enrollmentDTO)
+        [HttpPut("Enrollments/{id}")]
+        public IActionResult Put([FromRoute] int id, [FromBody] EnrollmentDTO enrollmentDTO)
         {
+            enrollmentDTO.ID = id;
             return Ok(_enrollmentService.UpdateEnrollment(enrollmentDTO));
         }
 
-        [HttpDelete("DeleteEnrollment")]
-        public IActionResult Delete([FromQuery] int id)
+        [HttpDelete("Enrollments/{id}")]
+        public IActionResult Delete([FromRoute] int id)
         {
             return Ok(_enrollmentService.DeleteEnrollment(id));
         }

@@ -1,6 +1,8 @@
 ﻿using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTOs;
+using System;
+using System.Diagnostics;
 
 namespace BasicCrudOperations.Controllers
 {
@@ -15,32 +17,33 @@ namespace BasicCrudOperations.Controllers
             _courseService = courseService;
         }
 
-        [HttpGet("GetCourses")]
+        [HttpGet("Courses")]
         public IActionResult Get()
         {
             return Ok(_courseService.GetCourses());
         }
 
-        [HttpGet("GetCourseByID")]
-        public IActionResult Get([FromQuery] int id)
+        [HttpGet("Courses/{id}")]
+        public IActionResult Get([FromRoute] int id)
         {
             return Ok(_courseService.GetCourseByID(id));
         }
 
-        [HttpPost("AddCourse")]
-        public IActionResult Post([FromBody] CourseDTO course)
+        [HttpPost("Courses")]
+        public IActionResult Post([FromBody] CourseDTO courseDTO)
         {
-            return Ok(_courseService.AddCourse(course));
+            return Ok(_courseService.AddCourse(courseDTO));
         }
 
-        [HttpPut("UpdateCourse")]
-        public IActionResult Put([FromBody] CourseDTO courseDTO)
+        [HttpPut("Courses/{id}")]
+        public IActionResult Put([FromRoute] int id, [FromBody] CourseDTO courseDTO)
         {
+            courseDTO.ID = id;
             return Ok(_courseService.UpdateCourse(courseDTO));
         }
 
-        [HttpDelete("DeleteCourse")]
-        public IActionResult Delete([FromQuery] int id)
+        [HttpDelete("Courses/{id}")]
+        public IActionResult Delete([FromRoute] int id)
         {
             return Ok(_courseService.DeleteCourse(id));
         }

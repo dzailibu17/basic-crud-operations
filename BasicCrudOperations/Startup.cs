@@ -1,12 +1,13 @@
 using BasicCrudOperations.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repository.DbModels;
-
+using System;
 
 namespace BasicCrudOperations
 {
@@ -34,9 +35,13 @@ namespace BasicCrudOperations
         {
             if (env.IsDevelopment())
             {
+                //app.UseStatusCodePages();
+                //app.UseDatabaseErrorPage();
                 app.UseDeveloperExceptionPage();
             }
-
+            
+            app.UseExceptionHandler("/Error");
+                        
             app.UseHttpsRedirection();
 
             app.UseRouting();

@@ -23,32 +23,33 @@ namespace BasicCrudOperations.Controllers
             return Ok("Welcome");
         }
 
-        [HttpGet("GetUsers")]
+        [HttpGet("Users")]
         public IActionResult Get()
         {
             return Ok(_userService.GetUsers());
         }
 
-        [HttpGet("GetUserByID")]
-        public IActionResult Get([FromQuery] int id)
+        [HttpGet("Users/{id}")]
+        public IActionResult Get([FromRoute] int id)
         {
             return Ok(_userService.GetUserByID(id));
         }
 
-        [HttpPost("AddUser")]
+        [HttpPost("Users")]
         public IActionResult Post([FromBody] UserDTO userDTO)
         {
             return Ok(_userService.AddUser(userDTO));
         }
 
-        [HttpPut("UpdateUser")]
-        public IActionResult Put([FromBody] UserDTO userDTO)
+        [HttpPut("Users/{id}")]
+        public IActionResult Put([FromRoute] int id, [FromBody] UserDTO userDTO)
         {
+            userDTO.ID = id;
             return Ok(_userService.UpdateUser(userDTO));
         }
 
-        [HttpDelete("DeleteUser")]
-        public IActionResult Delete([FromQuery] int id)
+        [HttpDelete("Users/{id}")]
+        public IActionResult Delete([FromRoute] int id)
         {
             return Ok(_userService.DeleteUser(id));
         }
