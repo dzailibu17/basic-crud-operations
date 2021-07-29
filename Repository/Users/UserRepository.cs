@@ -76,17 +76,21 @@ namespace Repository.Users
 
         public UserDTO UpdateUser(UserDTO userChangesDTO)
         {
-            var userChanges = new User
+            if (context.Users.Any(x => x.ID == userChangesDTO.ID))
             {
-                ID = userChangesDTO.ID,
-                EnrollmentDate = userChangesDTO.EnrollmentDate,
-                FirstName = userChangesDTO.FirstName,
-                LastName = userChangesDTO.LastName,
-            };
-            var user = context.Users.Attach(userChanges);
-            user.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
-            return userChangesDTO;
+                var userChanges = new User
+                {
+                    ID = userChangesDTO.ID,
+                    EnrollmentDate = userChangesDTO.EnrollmentDate,
+                    FirstName = userChangesDTO.FirstName,
+                    LastName = userChangesDTO.LastName,
+                };
+                var user = context.Users.Attach(userChanges);
+                user.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+                return userChangesDTO;
+            }
+            return null;
         }
     }
 }

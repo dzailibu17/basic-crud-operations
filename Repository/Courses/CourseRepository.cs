@@ -74,16 +74,20 @@ namespace Repository.Courses
 
         public CourseDTO UpdateCourse(CourseDTO courseChangesDTO)
         {
-            var courseChanges = new Course
+            if (context.Courses.Any(x => x.ID == courseChangesDTO.ID))
             {
-                ID = courseChangesDTO.ID,
-                Credits = courseChangesDTO.Credits,
-                Title = courseChangesDTO.Title,
-            };
-            var course = context.Courses.Attach(courseChanges);
-            course.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
-            return courseChangesDTO;
+                var courseChanges = new Course
+                {
+                    ID = courseChangesDTO.ID,
+                    Credits = courseChangesDTO.Credits,
+                    Title = courseChangesDTO.Title,
+                };
+                var course = context.Courses.Attach(courseChanges);
+                course.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+                return courseChangesDTO;
+            }
+            return null;
         }
 
         private int FindNewID(int? id = null)

@@ -77,17 +77,21 @@ namespace Repository.Enrollments
 
         public EnrollmentDTO UpdateEnrollment(EnrollmentDTO enrollmentChangesDTO)
         {
-            var enrollmentChanges = new Enrollment
+            if (context.Enrollments.Any(x => x.ID == enrollmentChangesDTO.ID))
             {
-                ID = enrollmentChangesDTO.ID,
-                CourseID = enrollmentChangesDTO.CourseID,
-                UserID = enrollmentChangesDTO.UserID,
-                Grade = enrollmentChangesDTO.Grade,
-            };
-            var enrollment = context.Enrollments.Attach(enrollmentChanges);
-            enrollment.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
-            return enrollmentChangesDTO;
+                var enrollmentChanges = new Enrollment
+                {
+                    ID = enrollmentChangesDTO.ID,
+                    CourseID = enrollmentChangesDTO.CourseID,
+                    UserID = enrollmentChangesDTO.UserID,
+                    Grade = enrollmentChangesDTO.Grade,
+                };
+                var enrollment = context.Enrollments.Attach(enrollmentChanges);
+                enrollment.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+                return enrollmentChangesDTO;
+            }
+            return null;
         }
     }
 }
