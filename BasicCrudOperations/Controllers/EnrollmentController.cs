@@ -18,57 +18,32 @@ namespace BasicCrudOperations.Controllers
         [HttpGet("Enrollments")]
         public IActionResult Get()
         {
-            var enrollments = _enrollmentService.GetEnrollments();
-            if (enrollments == null)
-            {
-                return NotFound();
-            }
-            return Ok(enrollments);
+            return Ok(_enrollmentService.GetEnrollments());
         }
 
         [HttpGet("Enrollments/{id}")]
         public IActionResult Get([FromRoute] int id)
         {
-           var enrollment = _enrollmentService.GetEnrollmentByID(id);
-            if (enrollment == null)
-            {
-                return NotFound();
-            }
-            return Ok(enrollment);
+            return Ok(_enrollmentService.GetEnrollmentByID(id));
         }
 
         [HttpPost("Enrollments")]
         public IActionResult Post([FromBody] EnrollmentDTO enrollmentDTO)
         {
-            var enrollment = _enrollmentService.AddEnrollment(enrollmentDTO);
-            if (enrollment == null)
-            {
-                return NotFound();
-            }
-            return Ok(enrollment);
+            return Ok(_enrollmentService.AddEnrollment(enrollmentDTO));
         }
         
         [HttpPut("Enrollments/{id}")]
         public IActionResult Put([FromRoute] int id, [FromBody] EnrollmentDTO enrollmentDTO)
         {
             enrollmentDTO.ID = id;
-            var enrollment =  _enrollmentService.UpdateEnrollment(enrollmentDTO);
-            if (enrollment == null)
-            {
-                return NotFound();
-            }
-            return Ok(enrollment);
+            return Ok(_enrollmentService.UpdateEnrollment(enrollmentDTO));
         }
 
         [HttpDelete("Enrollments/{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
-            var enrollment = _enrollmentService.DeleteEnrollment(id);
-            if (enrollment == null)
-            {
-                return NotFound();
-            }
-            return Ok(enrollment);
+            return Ok(_enrollmentService.DeleteEnrollment(id));
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using Interface.Repositories;
 using Model.DTOs;
 using Repository.DbModels;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Repository.Users
@@ -19,23 +17,15 @@ namespace Repository.Users
 
         public UserDTO AddUser(UserDTO user)
         {
-            try
+            context.Users.Add(new DbModels.User
             {
-                context.Users.Add(new DbModels.User
-                {
-                    ID = user.ID,
-                    EnrollmentDate = user.EnrollmentDate,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                });
-                context.SaveChanges();
-                return user;
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.Message);
-            }
-            return null;
+                ID = user.ID,
+                EnrollmentDate = user.EnrollmentDate,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+            });
+            context.SaveChanges();
+            return user;
         }
 
         public UserDTO DeleteUser(int ID)
@@ -59,67 +49,44 @@ namespace Repository.Users
 
         public UserDTO GetUserByID(int ID)
         {
-            try 
-            { 
-                var existingUser = context.Users.Find(ID);
-                if(existingUser != null)
-                {
-                    return new UserDTO
-                    {
-                        ID = existingUser.ID,
-                        EnrollmentDate = existingUser.EnrollmentDate,
-                        FirstName = existingUser.FirstName,
-                        LastName = existingUser.LastName,
-                    };
-                }
-            }
-            catch (Exception ex)
+            var existingUser = context.Users.Find(ID);
+            if (existingUser != null)
             {
-                Trace.WriteLine(ex.Message);
+                return new UserDTO
+                {
+                    ID = existingUser.ID,
+                    EnrollmentDate = existingUser.EnrollmentDate,
+                    FirstName = existingUser.FirstName,
+                    LastName = existingUser.LastName,
+                };
             }
             return null;
         }
 
         public IEnumerable<UserDTO> GetUsers()
         {
-            try 
-            { 
-                return context.Users.Select(u => new UserDTO
-                {
-                    ID = u.ID,
-                    EnrollmentDate = u.EnrollmentDate,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                });
-            }
-            catch (Exception ex)
+            return context.Users.Select(u => new UserDTO
             {
-                Trace.WriteLine(ex.Message);
-            }
-            return null;
+                ID = u.ID,
+                EnrollmentDate = u.EnrollmentDate,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+            });
         }
 
         public UserDTO UpdateUser(UserDTO userChangesDTO)
         {
-            try 
-            { 
-                var userChanges = new User
-                {
-                    ID = userChangesDTO.ID,
-                    EnrollmentDate = userChangesDTO.EnrollmentDate,
-                    FirstName = userChangesDTO.FirstName,
-                    LastName = userChangesDTO.LastName,
-                };
-                var user = context.Users.Attach(userChanges);
-                user.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                context.SaveChanges();
-                return userChangesDTO;
-            }
-            catch (Exception ex)
+            var userChanges = new User
             {
-                Trace.WriteLine(ex.Message);
-            }
-            return null;
+                ID = userChangesDTO.ID,
+                EnrollmentDate = userChangesDTO.EnrollmentDate,
+                FirstName = userChangesDTO.FirstName,
+                LastName = userChangesDTO.LastName,
+            };
+            var user = context.Users.Attach(userChanges);
+            user.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
+            return userChangesDTO;
         }
     }
 }
