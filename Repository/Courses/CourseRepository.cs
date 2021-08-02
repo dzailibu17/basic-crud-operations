@@ -44,7 +44,7 @@ namespace Repository.Courses
                 context.SaveChanges();
                 return deletedCourse;
             }
-            return null;
+            throw new NotFoundException(String.Format("Course with ID = {0} does not exist.", ID));
         }
 
         public CourseDTO GetCourseByID(int ID)
@@ -87,7 +87,7 @@ namespace Repository.Courses
                 context.SaveChanges();
                 return courseChangesDTO;
             }
-            return null;
+            throw new NotFoundException(String.Format("Course with ID = {0} does not exist.", courseChangesDTO.ID));
         }
 
         private int FindNewID(int? id = null)

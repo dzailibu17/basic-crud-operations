@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Model.Enums;
+
 
 namespace Model.Exceptions
 {
     public class NotFoundException : BaseException
     {
-        public NotFoundException(string errorMassage) : base(errorMassage)
+        public NotFoundException(string errorMessage) : base(errorMessage)
         {
-            base.StatusCode = 404;
+            base.StatusCode = StatusCode.NotFound;
         }
     }
 }

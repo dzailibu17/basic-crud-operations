@@ -47,7 +47,7 @@ namespace Repository.Enrollments
                 context.SaveChanges();
                 return deletedEnrollment;
             }
-            return null;
+            throw new NotFoundException(String.Format("Enrollment with ID = {0} does not exist.", ID));
         }
 
         public EnrollmentDTO GetEnrollmentByID(int ID)
@@ -93,7 +93,7 @@ namespace Repository.Enrollments
                 context.SaveChanges();
                 return enrollmentChangesDTO;
             }
-            return null;
+            throw new NotFoundException(String.Format("Enrollment with ID = {0} does not exist.", enrollmentChangesDTO.ID));
         }
     }
 }

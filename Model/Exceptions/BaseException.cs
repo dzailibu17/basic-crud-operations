@@ -1,14 +1,16 @@
-﻿namespace Model.Exceptions
+﻿using Model.Enums;
+
+namespace Model.Exceptions
 {
     public abstract class BaseException : System.Exception
     {
-        public int StatusCode { get; set; }
+        public StatusCode StatusCode { get; set; }
 
-        public string ErrorMassage { get; set; }
+        public string ErrorMessage { get; set; }
 
-        public BaseException(string errorMassage)
+        public BaseException(string errorMessage)
         {
-            this.ErrorMassage = errorMassage;
+            this.ErrorMessage = errorMessage;
         }
     }
 }

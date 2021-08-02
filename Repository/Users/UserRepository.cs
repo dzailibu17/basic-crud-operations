@@ -46,7 +46,7 @@ namespace Repository.Users
                 context.SaveChanges();
                 return deletedUser;
             }
-            return null;
+            throw new NotFoundException(String.Format("User with ID = {0} does not exist.", ID));
         }
 
         public UserDTO GetUserByID(int ID)
@@ -92,7 +92,7 @@ namespace Repository.Users
                 context.SaveChanges();
                 return userChangesDTO;
             }
-            return null;
+            throw new NotFoundException(String.Format("User with ID = {0} does not exist.", userChangesDTO.ID));
         }
     }
 }

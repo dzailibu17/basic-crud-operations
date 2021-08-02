@@ -9,7 +9,8 @@ namespace Model.DTOs
 
         [StringLength(20, MinimumLength = 4)]
         public string Title { get; set; }
-        
+
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int Credits { get; set; }
 
         public ICollection<EnrollmentDTO> Enrollments { get; set; }
