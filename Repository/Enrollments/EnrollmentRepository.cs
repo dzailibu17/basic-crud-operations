@@ -1,6 +1,8 @@
 ﻿using Interface.Repositories;
 using Model.DTOs;
+using Model.Exceptions;
 using Repository.DbModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,7 +47,7 @@ namespace Repository.Enrollments
                 context.SaveChanges();
                 return deletedEnrollment;
             }
-            return null;
+            throw new NotFoundException(String.Format("Enrollment with ID = {0} does not exist.", ID));
         }
 
         public EnrollmentDTO GetEnrollmentByID(int ID)
@@ -61,7 +63,7 @@ namespace Repository.Enrollments
                     Grade = existingEnrollment.Grade,
                 };
             }
-            return null;
+            throw new NotFoundException(String.Format("Enrollment with ID = {0} does not exist.", ID));
         }
 
         public IEnumerable<EnrollmentDTO> GetEnrollments()
@@ -77,17 +79,21 @@ namespace Repository.Enrollments
 
         public EnrollmentDTO UpdateEnrollment(EnrollmentDTO enrollmentChangesDTO)
         {
-            var enrollmentChanges = new Enrollment
+            if (context.Enrollments.Any(x => x.ID == enrollmentChangesDTO.ID))
             {
-                ID = enrollmentChangesDTO.ID,
-                CourseID = enrollmentChangesDTO.CourseID,
-                UserID = enrollmentChangesDTO.UserID,
-                Grade = enrollmentChangesDTO.Grade,
-            };
-            var enrollment = context.Enrollments.Attach(enrollmentChanges);
-            enrollment.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
-            return enrollmentChangesDTO;
+                var enrollmentChanges = new Enrollment
+                {
+                    ID = enrollmentChangesDTO.ID,
+                    CourseID = enrollmentChangesDTO.CourseID,
+                    UserID = enrollmentChangesDTO.UserID,
+                    Grade = enrollmentChangesDTO.Grade,
+                };
+                var enrollment = context.Enrollments.Attach(enrollmentChanges);
+                enrollment.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+                return enrollmentChangesDTO;
+            }
+            throw new NotFoundException(String.Format("Enrollment with ID = {0} does not exist.", enrollmentChangesDTO.ID));
         }
     }
 }

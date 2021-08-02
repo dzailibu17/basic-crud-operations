@@ -1,6 +1,8 @@
 ﻿using Interface.Repositories;
 using Model.DTOs;
+using Model.Exceptions;
 using Repository.DbModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,7 +46,7 @@ namespace Repository.Users
                 context.SaveChanges();
                 return deletedUser;
             }
-            return null;
+            throw new NotFoundException(String.Format("User with ID = {0} does not exist.", ID));
         }
 
         public UserDTO GetUserByID(int ID)
@@ -60,7 +62,7 @@ namespace Repository.Users
                     LastName = existingUser.LastName,
                 };
             }
-            return null;
+            throw new NotFoundException(String.Format("User with ID = {0} does not exist.", ID));
         }
 
         public IEnumerable<UserDTO> GetUsers()
@@ -76,17 +78,21 @@ namespace Repository.Users
 
         public UserDTO UpdateUser(UserDTO userChangesDTO)
         {
-            var userChanges = new User
+            if (context.Users.Any(x => x.ID == userChangesDTO.ID))
             {
-                ID = userChangesDTO.ID,
-                EnrollmentDate = userChangesDTO.EnrollmentDate,
-                FirstName = userChangesDTO.FirstName,
-                LastName = userChangesDTO.LastName,
-            };
-            var user = context.Users.Attach(userChanges);
-            user.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
-            return userChangesDTO;
+                var userChanges = new User
+                {
+                    ID = userChangesDTO.ID,
+                    EnrollmentDate = userChangesDTO.EnrollmentDate,
+                    FirstName = userChangesDTO.FirstName,
+                    LastName = userChangesDTO.LastName,
+                };
+                var user = context.Users.Attach(userChanges);
+                user.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+                return userChangesDTO;
+            }
+            throw new NotFoundException(String.Format("User with ID = {0} does not exist.", userChangesDTO.ID));
         }
     }
 }

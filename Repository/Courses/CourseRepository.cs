@@ -1,9 +1,9 @@
 ﻿using Interface.Repositories;
 using Model.DTOs;
+using Model.Exceptions;
 using Repository.DbModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Repository.Courses
@@ -44,7 +44,7 @@ namespace Repository.Courses
                 context.SaveChanges();
                 return deletedCourse;
             }
-            return null;
+            throw new NotFoundException(String.Format("Course with ID = {0} does not exist.", ID));
         }
 
         public CourseDTO GetCourseByID(int ID)
@@ -59,7 +59,7 @@ namespace Repository.Courses
                     Title = existingCourse.Title,
                 };
             }
-            return null;
+            throw new NotFoundException(String.Format("Course with ID = {0} does not exist.", ID));
         }
 
         public IEnumerable<CourseDTO> GetCourses()
@@ -74,16 +74,20 @@ namespace Repository.Courses
 
         public CourseDTO UpdateCourse(CourseDTO courseChangesDTO)
         {
-            var courseChanges = new Course
+            if (context.Courses.Any(x => x.ID == courseChangesDTO.ID))
             {
-                ID = courseChangesDTO.ID,
-                Credits = courseChangesDTO.Credits,
-                Title = courseChangesDTO.Title,
-            };
-            var course = context.Courses.Attach(courseChanges);
-            course.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
-            return courseChangesDTO;
+                var courseChanges = new Course
+                {
+                    ID = courseChangesDTO.ID,
+                    Credits = courseChangesDTO.Credits,
+                    Title = courseChangesDTO.Title,
+                };
+                var course = context.Courses.Attach(courseChanges);
+                course.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+                return courseChangesDTO;
+            }
+            throw new NotFoundException(String.Format("Course with ID = {0} does not exist.", courseChangesDTO.ID));
         }
 
         private int FindNewID(int? id = null)
