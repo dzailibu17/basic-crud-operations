@@ -1,6 +1,8 @@
 ﻿using Interface.Repositories;
 using Model.DTOs;
+using Model.Exceptions;
 using Repository.DbModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -61,7 +63,7 @@ namespace Repository.Enrollments
                     Grade = existingEnrollment.Grade,
                 };
             }
-            return null;
+            throw new NotFoundException(String.Format("Enrollment with ID = {0} does not exist.", ID));
         }
 
         public IEnumerable<EnrollmentDTO> GetEnrollments()

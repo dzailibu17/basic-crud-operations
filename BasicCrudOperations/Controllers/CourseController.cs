@@ -1,8 +1,6 @@
 ﻿using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTOs;
-using System;
-using System.Diagnostics;
 
 namespace BasicCrudOperations.Controllers
 {

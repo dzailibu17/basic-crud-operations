@@ -1,6 +1,8 @@
 ﻿using Interface.Repositories;
 using Model.DTOs;
+using Model.Exceptions;
 using Repository.DbModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -60,7 +62,7 @@ namespace Repository.Users
                     LastName = existingUser.LastName,
                 };
             }
-            return null;
+            throw new NotFoundException(String.Format("User with ID = {0} does not exist.", ID));
         }
 
         public IEnumerable<UserDTO> GetUsers()

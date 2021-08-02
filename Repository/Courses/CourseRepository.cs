@@ -1,9 +1,9 @@
 ﻿using Interface.Repositories;
 using Model.DTOs;
+using Model.Exceptions;
 using Repository.DbModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Repository.Courses
@@ -59,7 +59,7 @@ namespace Repository.Courses
                     Title = existingCourse.Title,
                 };
             }
-            return null;
+            throw new NotFoundException(String.Format("Course with ID = {0} does not exist.", ID));
         }
 
         public IEnumerable<CourseDTO> GetCourses()
