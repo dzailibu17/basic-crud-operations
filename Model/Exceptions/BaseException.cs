@@ -8,6 +8,10 @@ namespace Model.Exceptions
 
         public string ErrorMessage { get; set; }
 
+        public BaseException()
+        {
+
+        }
         public BaseException(string errorMessage)
         {
             this.ErrorMessage = errorMessage;

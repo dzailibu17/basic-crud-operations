@@ -2,6 +2,7 @@ using BasicCrudOperations.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,8 @@ namespace BasicCrudOperations
         {
             services.AddDbContext<DbModels>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<DbModels>();
             services.AddControllers();
             services.RegisterAppServices();
             services.RegisterAppRepositories();
@@ -39,7 +42,9 @@ namespace BasicCrudOperations
                 //app.UseDatabaseErrorPage();
                 app.UseDeveloperExceptionPage();
             }
-            
+
+            app.UseAuthentication();
+
             app.UseExceptionHandler("/Error");
                         
             app.UseHttpsRedirection();

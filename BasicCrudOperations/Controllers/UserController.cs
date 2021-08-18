@@ -1,4 +1,5 @@
 ﻿using Interface.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTOs;
 
@@ -6,6 +7,7 @@ using Model.DTOs;
 
 namespace BasicCrudOperations.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase

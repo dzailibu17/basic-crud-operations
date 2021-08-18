@@ -1,9 +1,11 @@
 ﻿using Interface.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTOs;
 
 namespace BasicCrudOperations.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EnrollmentController : ControllerBase

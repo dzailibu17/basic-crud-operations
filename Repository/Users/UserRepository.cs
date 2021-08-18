@@ -10,29 +10,29 @@ namespace Repository.Users
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DbModels.DbModels context;
+        private readonly DbModels.DbModels _context;
 
         public UserRepository(DbModels.DbModels context)
         {
-            this.context = context;
+            _context = context;
         }
 
         public UserDTO AddUser(UserDTO user)
         {
-            context.Users.Add(new DbModels.User
+            _context.Users.Add(new User
             {
-                ID = user.ID,
-                EnrollmentDate = user.EnrollmentDate,
+                EnrollmentDate = user.EnrollmentDate.Value,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                Email = user.Email,
             });
-            context.SaveChanges();
+            _context.SaveChanges();
             return user;
         }
 
         public UserDTO DeleteUser(int ID)
         {
-            User user = context.Users.Find(ID);
+            User user = _context.Users.Find(ID);
             if (user != null)
             {
                 var deletedUser = new UserDTO
@@ -41,9 +41,10 @@ namespace Repository.Users
                     EnrollmentDate = user.EnrollmentDate,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    Email = user.Email,
                 };
-                context.Users.Remove(user);
-                context.SaveChanges();
+                _context.Users.Remove(user);
+                _context.SaveChanges();
                 return deletedUser;
             }
             throw new NotFoundException(String.Format("User with ID = {0} does not exist.", ID));
@@ -51,7 +52,7 @@ namespace Repository.Users
 
         public UserDTO GetUserByID(int ID)
         {
-            var existingUser = context.Users.Find(ID);
+            var existingUser = _context.Users.Find(ID);
             if (existingUser != null)
             {
                 return new UserDTO
@@ -60,6 +61,7 @@ namespace Repository.Users
                     EnrollmentDate = existingUser.EnrollmentDate,
                     FirstName = existingUser.FirstName,
                     LastName = existingUser.LastName,
+                    Email = existingUser.Email,
                 };
             }
             throw new NotFoundException(String.Format("User with ID = {0} does not exist.", ID));
@@ -67,29 +69,31 @@ namespace Repository.Users
 
         public IEnumerable<UserDTO> GetUsers()
         {
-            return context.Users.Select(u => new UserDTO
+            return _context.Users.Select(u => new UserDTO
             {
                 ID = u.ID,
                 EnrollmentDate = u.EnrollmentDate,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
+                Email = u.Email,
             });
         }
 
         public UserDTO UpdateUser(UserDTO userChangesDTO)
         {
-            if (context.Users.Any(x => x.ID == userChangesDTO.ID))
+            if (_context.Users.Any(x => x.ID == userChangesDTO.ID))
             {
                 var userChanges = new User
                 {
                     ID = userChangesDTO.ID,
-                    EnrollmentDate = userChangesDTO.EnrollmentDate,
+                    EnrollmentDate = userChangesDTO.EnrollmentDate.Value,
                     FirstName = userChangesDTO.FirstName,
                     LastName = userChangesDTO.LastName,
+                    Email = userChangesDTO.Email,
                 };
-                var user = context.Users.Attach(userChanges);
+                var user = _context.Users.Attach(userChanges);
                 user.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                context.SaveChanges();
+                _context.SaveChanges();
                 return userChangesDTO;
             }
             throw new NotFoundException(String.Format("User with ID = {0} does not exist.", userChangesDTO.ID));
