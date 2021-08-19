@@ -1,21 +1,20 @@
 ﻿using Interface.Repositories;
 using Model.DTOs;
 using Model.Exceptions;
-using System;
 using System.Threading.Tasks;
-using i = Microsoft.AspNetCore.Identity;
+using identity = Microsoft.AspNetCore.Identity;
 
 namespace Repository.IdentityUser
 {
     public class IdentityUserRepository : IIdentityUserRepository
     {
-        private readonly i.UserManager<i.IdentityUser> _userManager;
-        private readonly i.SignInManager<i.IdentityUser> _signInManager;
+        private readonly identity.UserManager<identity.IdentityUser> _userManager;
+        private readonly identity.SignInManager<identity.IdentityUser> _signInManager;
         private readonly IUserRepository _userRepository;
         private readonly DbModels.DbModels _context;
 
-        public IdentityUserRepository(i.UserManager<i.IdentityUser> userManager,
-                                      i.SignInManager<i.IdentityUser> signInManager,
+        public IdentityUserRepository(identity.UserManager<identity.IdentityUser> userManager,
+                                      identity.SignInManager<identity.IdentityUser> signInManager,
                                       IUserRepository userRepository,
                                       DbModels.DbModels context)
         {
@@ -35,7 +34,7 @@ namespace Repository.IdentityUser
             var transaction = _context.Database.BeginTransaction();
             try
             {
-                var User = new i.IdentityUser { UserName = user.User.Email, Email = user.User.Email };
+                var User = new identity.IdentityUser { UserName = user.User.Email, Email = user.User.Email };
                 var result = await _userManager.CreateAsync(User, user.Password);
 
                 if (!result.Succeeded)
@@ -57,12 +56,13 @@ namespace Repository.IdentityUser
         public async Task<string> LoginUserAsync(IdentityUserDTO user)
         {
             var result = await _signInManager.PasswordSignInAsync(user.User.Email, user.Password, false, false);
-            if (result.Succeeded)
+            
+            if (!result.Succeeded)
             {
-                //_signInManager.getUserIdentityTokenAsync()
-                return "token";
+                throw new NotFoundException("Invalid login attempt.");
             }
-            throw new NotFoundException("Invalid login attempt.");
+
+            return "OK";
         }
 
         public string LoginUser(IdentityUserDTO user)

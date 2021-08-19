@@ -27,7 +27,7 @@ namespace BasicCrudOperations.Controllers
         }
 
         [HttpPost("Login")]
-        public IActionResult Login(IdentityUserDTO user)
+        public IActionResult Login([FromBody] IdentityUserDTO user)
         {
             return Ok(_accountService.LoginUser(user));
         }
