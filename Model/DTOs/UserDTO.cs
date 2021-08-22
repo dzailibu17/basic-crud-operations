@@ -19,6 +19,6 @@ namespace Model.DTOs
         [Required]
         public DateTime? EnrollmentDate { get; set; }
 
-        public ICollection<EnrollmentDTO> Enrollments { get; set; }
+        //public ICollection<EnrollmentDTO> Enrollments { get; set; }
     }
 }

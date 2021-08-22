@@ -13,6 +13,6 @@ namespace Model.DTOs
         [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int Credits { get; set; }
 
-        public ICollection<EnrollmentDTO> Enrollments { get; set; }
+        //public ICollection<EnrollmentDTO> Enrollments { get; set; } 
     }
 }

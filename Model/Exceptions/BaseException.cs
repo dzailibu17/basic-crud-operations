@@ -6,15 +6,12 @@ namespace Model.Exceptions
     {
         public StatusCode StatusCode { get; set; }
 
-        public string ErrorMessage { get; set; }
-
         public BaseException()
         {
 
         }
-        public BaseException(string errorMessage)
+        public BaseException(string errorMessage) : base(errorMessage)
         {
-            this.ErrorMessage = errorMessage;
         }
     }
 }

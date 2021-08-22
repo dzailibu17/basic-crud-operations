@@ -1,5 +1,4 @@
 ﻿using Interface.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTOs;
 
