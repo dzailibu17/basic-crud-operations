@@ -24,8 +24,11 @@ namespace Repository.Courses
         public CourseDTO AddCourse(CourseDTO courseDTO)
         {
             _context.Courses.Add(_mapper.Map<Course>(courseDTO));
+            if (_context.Courses.Any(x => x.ID == courseDTO.ID))
+            {
+                return null;
+            }
             _context.SaveChanges();
-
             return courseDTO;
         }
 
