@@ -6,6 +6,7 @@ using Model.DTOs;
 
 namespace BasicCrudOperations.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase

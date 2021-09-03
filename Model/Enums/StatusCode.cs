@@ -2,6 +2,7 @@
 {
     public enum StatusCode
     {
-        NotFound = 404
+        NotFound = 404,
+        BadRequest = 400
     }
 }

@@ -1,13 +1,12 @@
 using BasicCrudOperations.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repository.DbModels;
-using System;
 
 namespace BasicCrudOperations
 {
@@ -25,26 +24,35 @@ namespace BasicCrudOperations
         {
             services.AddDbContext<DbModels>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<DbModels>();
             services.AddControllers();
             services.RegisterAppServices();
             services.RegisterAppRepositories();
+            var config = new AutoMapper.MapperConfiguration(c =>
+            {
+                c.AddProfile(new ApplicationProfile());
+            });
+            var mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                //app.UseStatusCodePages();
-                //app.UseDatabaseErrorPage();
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseExceptionHandler("/Error");
-                        
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -55,3 +63,4 @@ namespace BasicCrudOperations
         }
     }
 }
+

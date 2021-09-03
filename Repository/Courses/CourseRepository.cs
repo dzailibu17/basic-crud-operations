@@ -1,4 +1,6 @@
-﻿using Interface.Repositories;
+﻿using AutoMapper;
+using Interface.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Model.DTOs;
 using Model.Exceptions;
 using Repository.DbModels;
@@ -10,98 +12,67 @@ namespace Repository.Courses
 {
     public class CourseRepository : ICourseRepository
     {
-        private readonly DbModels.DbModels context;
+        private readonly DbModels.DbModels _context;
+        private readonly IMapper _mapper;
 
-        public CourseRepository(DbModels.DbModels context)
+        public CourseRepository(DbModels.DbModels context, IMapper mapper)
         {
-            this.context = context;
+            _context = context;
+            _mapper = mapper;
         }
 
-        public CourseDTO AddCourse(CourseDTO course)
+        public CourseDTO AddCourse(CourseDTO courseDTO)
         {
-            context.Courses.Add(new Course
+            _context.Courses.Add(_mapper.Map<Course>(courseDTO));
+            if (_context.Courses.Any(x => x.ID == courseDTO.ID))
             {
-                ID = FindNewID(),
-                Credits = course.Credits,
-                Title = course.Title,
-            });
-            context.SaveChanges();
-            return course;
+                return null;
+            }
+            _context.SaveChanges();
+            return courseDTO;
         }
 
         public CourseDTO DeleteCourse(int ID)
         {
-            Course course = context.Courses.Find(ID);
+            Course course = _context.Courses.Find(ID);
             if (course != null)
             {
-                var deletedCourse = new CourseDTO
-                {
-                    ID = course.ID,
-                    Credits = course.Credits,
-                    Title = course.Title,
-                };
-                context.Courses.Remove(course);
-                context.SaveChanges();
-                return deletedCourse;
+                _context.Courses.Remove(course);
+                _context.SaveChanges();
+                return _mapper.Map<CourseDTO>(course);
             }
+
             throw new NotFoundException(String.Format("Course with ID = {0} does not exist.", ID));
         }
 
         public CourseDTO GetCourseByID(int ID)
         {
-            var existingCourse = context.Courses.Find(ID);
+            var existingCourse = _context.Courses.Find(ID);
             if (existingCourse != null)
             {
-                return new CourseDTO
-                {
-                    ID = existingCourse.ID,
-                    Credits = existingCourse.Credits,
-                    Title = existingCourse.Title,
-                };
+                return _mapper.Map<CourseDTO>(existingCourse);
             }
+
             throw new NotFoundException(String.Format("Course with ID = {0} does not exist.", ID));
         }
 
         public IEnumerable<CourseDTO> GetCourses()
         {
-            return context.Courses.Select(c => new CourseDTO
-            {
-                ID = c.ID,
-                Credits = c.Credits,
-                Title = c.Title,
-            });
+            return _mapper.Map<IEnumerable<CourseDTO>>(_context.Courses.Include(c => c.Enrollments));
         }
 
         public CourseDTO UpdateCourse(CourseDTO courseChangesDTO)
         {
-            if (context.Courses.Any(x => x.ID == courseChangesDTO.ID))
+            if (_context.Courses.Any(x => x.ID == courseChangesDTO.ID))
             {
-                var courseChanges = new Course
-                {
-                    ID = courseChangesDTO.ID,
-                    Credits = courseChangesDTO.Credits,
-                    Title = courseChangesDTO.Title,
-                };
-                var course = context.Courses.Attach(courseChanges);
-                course.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                context.SaveChanges();
+                var course = _context.Courses.Attach(_mapper.Map<Course>(courseChangesDTO));
+                course.State = EntityState.Modified;
+                _context.SaveChanges();
+
                 return courseChangesDTO;
             }
-            throw new NotFoundException(String.Format("Course with ID = {0} does not exist.", courseChangesDTO.ID));
-        }
 
-        private int FindNewID(int? id = null)
-        {
-            if (!id.HasValue)
-            {
-                id = context.Courses.Any() ? context.Courses.Count() + 1 : 1;
-            }
-            if (context.Courses.Find(id) != null)
-            {
-                id += 1;
-                FindNewID(id);
-            }
-            return id.Value;
+            throw new NotFoundException(String.Format("Course with ID = {0} does not exist.", courseChangesDTO.ID));
         }
     }
 }

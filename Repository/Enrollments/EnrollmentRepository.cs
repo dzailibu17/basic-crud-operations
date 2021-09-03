@@ -1,4 +1,6 @@
-﻿using Interface.Repositories;
+﻿using AutoMapper;
+using Interface.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Model.DTOs;
 using Model.Exceptions;
 using Repository.DbModels;
@@ -10,89 +12,65 @@ namespace Repository.Enrollments
 {
     public class EnrollmentRepository : IEnrollmentRepository
     {
-        private readonly DbModels.DbModels context;
+        private readonly DbModels.DbModels _context;
+        private readonly IMapper _mapper;
 
-        public EnrollmentRepository(DbModels.DbModels context)
+        public EnrollmentRepository(DbModels.DbModels context, IMapper mapper)
         {
-            this.context = context;
+            _context = context;
+            _mapper = mapper;
         }
 
-        public EnrollmentDTO AddEnrollment(EnrollmentDTO enrollment)
+        public EnrollmentDTO AddEnrollment(EnrollmentDTO enrollmentDTO)
         {
-            context.Enrollments.Add(new DbModels.Enrollment
-            {
-                ID = enrollment.ID,
-                CourseID = enrollment.CourseID,
-                UserID = enrollment.UserID,
-                Grade = enrollment.Grade,
+            _context.Enrollments.Add(_mapper.Map<Enrollment>(enrollmentDTO));
+            _context.SaveChanges();
 
-            });
-            context.SaveChanges();
-            return enrollment;
+            return enrollmentDTO;
         }
 
         public EnrollmentDTO DeleteEnrollment(int ID)
         {
-            Enrollment enrollment = context.Enrollments.Find(ID);
+            Enrollment enrollment = _context.Enrollments.Find(ID);
             if (enrollment != null)
             {
-                var deletedEnrollment = new EnrollmentDTO
-                {
-                    ID = enrollment.ID,
-                    CourseID = enrollment.CourseID,
-                    UserID = enrollment.UserID,
-                    Grade = enrollment.Grade,
-                };
-                context.Enrollments.Remove(enrollment);
-                context.SaveChanges();
-                return deletedEnrollment;
+                _context.Enrollments.Remove(enrollment);
+                _context.SaveChanges();
+                return _mapper.Map<EnrollmentDTO>(enrollment);
             }
+
             throw new NotFoundException(String.Format("Enrollment with ID = {0} does not exist.", ID));
         }
 
         public EnrollmentDTO GetEnrollmentByID(int ID)
         {
-            var existingEnrollment = context.Enrollments.Find(ID);
+            var existingEnrollment = _context.Enrollments.Find(ID);
             if (existingEnrollment != null)
             {
-                return new EnrollmentDTO
-                {
-                    ID = existingEnrollment.ID,
-                    CourseID = existingEnrollment.CourseID,
-                    UserID = existingEnrollment.UserID,
-                    Grade = existingEnrollment.Grade,
-                };
+                return _mapper.Map<EnrollmentDTO>(existingEnrollment);
             }
+
             throw new NotFoundException(String.Format("Enrollment with ID = {0} does not exist.", ID));
         }
 
         public IEnumerable<EnrollmentDTO> GetEnrollments()
         {
-            return context.Enrollments.Select(e => new EnrollmentDTO
-            {
-                ID = e.ID,
-                CourseID = e.CourseID,
-                UserID = e.UserID,
-                Grade = e.Grade,
-            });
+            IEnumerable<Enrollment> Enrollments = _context.Enrollments.Include(e => e.User).
+                                                                       Include(e => e.Course);
+            return _mapper.Map<IEnumerable<EnrollmentDTO>>(Enrollments); 
         }
 
         public EnrollmentDTO UpdateEnrollment(EnrollmentDTO enrollmentChangesDTO)
         {
-            if (context.Enrollments.Any(x => x.ID == enrollmentChangesDTO.ID))
+            if (_context.Enrollments.Any(x => x.ID == enrollmentChangesDTO.ID))
             {
-                var enrollmentChanges = new Enrollment
-                {
-                    ID = enrollmentChangesDTO.ID,
-                    CourseID = enrollmentChangesDTO.CourseID,
-                    UserID = enrollmentChangesDTO.UserID,
-                    Grade = enrollmentChangesDTO.Grade,
-                };
-                var enrollment = context.Enrollments.Attach(enrollmentChanges);
-                enrollment.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                context.SaveChanges();
+                var enrollment = _context.Enrollments.Attach(_mapper.Map<Enrollment>(enrollmentChangesDTO));
+                enrollment.State = EntityState.Modified;
+                _context.SaveChanges();
+
                 return enrollmentChangesDTO;
             }
+
             throw new NotFoundException(String.Format("Enrollment with ID = {0} does not exist.", enrollmentChangesDTO.ID));
         }
     }

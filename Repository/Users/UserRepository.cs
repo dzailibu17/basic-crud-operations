@@ -1,4 +1,6 @@
-﻿using Interface.Repositories;
+﻿using AutoMapper;
+using Interface.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Model.DTOs;
 using Model.Exceptions;
 using Repository.DbModels;
@@ -10,88 +12,63 @@ namespace Repository.Users
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DbModels.DbModels context;
+        private readonly DbModels.DbModels _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(DbModels.DbModels context)
+        public UserRepository(DbModels.DbModels context, IMapper mapper)
         {
-            this.context = context;
+            _context = context;
+            _mapper = mapper;
         }
 
-        public UserDTO AddUser(UserDTO user)
+        public UserDTO AddUser(UserDTO userDTO)
         {
-            context.Users.Add(new DbModels.User
-            {
-                ID = user.ID,
-                EnrollmentDate = user.EnrollmentDate,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-            });
-            context.SaveChanges();
-            return user;
+            _context.Users.Add(_mapper.Map<User>(userDTO));
+            _context.SaveChanges();
+
+            return userDTO;
         }
 
         public UserDTO DeleteUser(int ID)
         {
-            User user = context.Users.Find(ID);
+            User user = _context.Users.Find(ID);
             if (user != null)
             {
-                var deletedUser = new UserDTO
-                {
-                    ID = user.ID,
-                    EnrollmentDate = user.EnrollmentDate,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                };
-                context.Users.Remove(user);
-                context.SaveChanges();
-                return deletedUser;
+                _context.Users.Remove(user);
+                _context.SaveChanges();
+                return _mapper.Map<UserDTO>(user);
             }
+
             throw new NotFoundException(String.Format("User with ID = {0} does not exist.", ID));
         }
 
         public UserDTO GetUserByID(int ID)
         {
-            var existingUser = context.Users.Find(ID);
+            var existingUser = _context.Users.Find(ID);
             if (existingUser != null)
             {
-                return new UserDTO
-                {
-                    ID = existingUser.ID,
-                    EnrollmentDate = existingUser.EnrollmentDate,
-                    FirstName = existingUser.FirstName,
-                    LastName = existingUser.LastName,
-                };
+                return _mapper.Map<UserDTO>(existingUser);
             }
+
             throw new NotFoundException(String.Format("User with ID = {0} does not exist.", ID));
         }
 
         public IEnumerable<UserDTO> GetUsers()
         {
-            return context.Users.Select(u => new UserDTO
-            {
-                ID = u.ID,
-                EnrollmentDate = u.EnrollmentDate,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-            });
+            return _mapper.Map<IEnumerable<UserDTO>>(_context.Users.Include(u => u.Enrollments));
         }
 
         public UserDTO UpdateUser(UserDTO userChangesDTO)
         {
-            if (context.Users.Any(x => x.ID == userChangesDTO.ID))
+            if (_context.Users.Any(x => x.ID == userChangesDTO.ID))
             {
-                var userChanges = new User
-                {
-                    ID = userChangesDTO.ID,
-                    EnrollmentDate = userChangesDTO.EnrollmentDate,
-                    FirstName = userChangesDTO.FirstName,
-                    LastName = userChangesDTO.LastName,
-                };
-                var user = context.Users.Attach(userChanges);
-                user.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                context.SaveChanges();
+                var user = _context.Users.Attach(_mapper.Map<User>(userChangesDTO));
+                user.State = EntityState.Modified;
+                _context.SaveChanges();
+
                 return userChangesDTO;
             }
+
             throw new NotFoundException(String.Format("User with ID = {0} does not exist.", userChangesDTO.ID));
         }
     }
